@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!--External Style-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!--External Script-->
+    <script src="./script.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <nav class="nav">
+        <ul>
+            <li><a class="active" href="./Home.html">Home</a></li>
+            <li><a href="./SignIn.html">SignIn</a></li>
+            <li style="float:right"><a class="active" href="#">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="boxHolder">
+
+        <!-- Main container for the form -->
+        <div class="container">
+
+            <h1>Login</h1>
+
+            <!-- User creation form -->
+            <form action="/submit_user" method="post">
+                <!-- Input field for the user's name -->
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <!-- Input field for the user's password -->
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <!-- Submit button for the form -->
+                <button type="submit">Enter</button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--Execute scripts-->
+<script>
+    // Function change body bgcolor
+    document.body.style.backgroundColor = randomColorRGBA(0.1);
+</script>
+
+</body>
+
+</html>

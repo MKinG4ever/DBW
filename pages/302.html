@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Transport</title>
+    <!--Internal Style-->
+    <style>
+        /* Basic reset for box-sizing and margin/padding */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styling for the body */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212; /* Dark background color */
+            color: #ffffff; /* Light text color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden; /* Hide overflow from background text */
+        }
+
+        /* Background text for the body */
+        body::before {
+            content: "302";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 70rem;
+            color: rgba(125, 125, 125, 0.1); /* Faint white color */
+            white-space: nowrap;
+        }
+
+        /* Container for the special transport content */
+        .container {
+            text-align: center;
+            padding: 50px;
+            border-radius: 35px 0 35px 35px;
+            background-color: rgba(30, 30, 30, 0.8); /* Slightly lighter dark color with opacity */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+            z-index: 1; /* Ensure content appears above background text */
+        }
+
+        /* Main message */
+        .container h1 {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            color: #4CAF50; /* Green color for emphasis */
+        }
+
+        /* Description */
+        .container p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>302</h1>
+    <p>You are being transported.</p>
+    <p id="countdown">10</p>
+
+</div>
+
+<script>
+    // Countdown timer
+    let count = 10; // Countdown duration in seconds
+    const countdownElement = document.getElementById('countdown');
+
+    const countdownInterval = setInterval(() => {
+        count--;
+        countdownElement.textContent = count;
+
+        if (count <= 0) {
+            clearInterval(countdownInterval);
+            window.location.href = '/'; // Redirect after countdown
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Location Mark</title>
+    <!--External Style-->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!--Internal Style-->
+    <style>
+        .container {
+            transition: all 1s;
+        }
+
+        .container:hover {
+            max-width: 800px;
+            transition: all 1s;
+        }
+    </style>
+    <!--External Script-->
+    <script src="./script.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <nav class="nav">
+        <ul>
+            <li><a class="active" href="./Home.html">Home</a></li>
+            <li><a href="./User.html">User</a></li>
+            <li style="float:right"><a class="active" href="#">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="boxHolder">
+
+        <!-- Main container for the form -->
+        <div class="container">
+
+            <h1>Location Mark</h1>
+
+            <!-- Location creation form -->
+            <form id="location-form" action="/submit_location" method="post">
+                <!-- Input fields for the location properties -->
+                <label for="x">X:</label>
+                <input type="number" id="x" name="x" required>
+
+                <label for="y">Y:</label>
+                <input type="number" id="y" name="y" required>
+
+                <label for="objectid">OBJECTID:</label>
+                <input type="text" id="objectid" name="objectid" required>
+
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required>
+
+                <label for="typ">TYP:</label>
+                <input type="text" id="typ" name="typ" required>
+
+                <label for="art">ART:</label>
+                <input type="text" id="art" name="art" required>
+
+                <label for="standorttyp">STANDORTTYP:</label>
+                <input type="text" id="standorttyp" name="standorttyp" required>
+
+                <label for="bezeichnung">BEZEICHNUNG:</label>
+                <input type="text" id="bezeichnung" name="bezeichnung" required>
+
+                <label for="bezeichnungzusatz">BEZEICHNUNGZUSATZ:</label>
+                <input type="text" id="bezeichnungzusatz" name="bezeichnungzusatz">
+
+                <label for="kurzbezeichnung">KURZBEZEICHNUNG:</label>
+                <input type="text" id="kurzbezeichnung" name="kurzbezeichnung">
+
+                <label for="strasse">STRASSE:</label>
+                <input type="text" id="strasse" name="strasse">
+
+                <label for="plz">PLZ:</label>
+                <input type="text" id="plz" name="plz">
+
+                <label for="ort">ORT:</label>
+                <input type="text" id="ort" name="ort">
+
+                <label for="telefon">TELEFON:</label>
+                <input type="tel" id="telefon" name="telefon">
+
+                <label for="fax">FAX:</label>
+                <input type="tel" id="fax" name="fax">
+
+                <label for="email">EMAIL:</label>
+                <input type="email" id="email" name="email">
+
+                <label for="profile">PROFILE:</label>
+                <input type="text" id="profile" name="profile">
+
+                <label for="sprachen">SPRACHEN:</label>
+                <input type="text" id="sprachen" name="sprachen">
+
+                <label for="www">WWW:</label>
+                <input type="url" id="www" name="www">
+
+                <label for="traeger">TRAEGER:</label>
+                <input type="text" id="traeger" name="traeger">
+
+                <label for="traegertyp">TRAEGERTYP:</label>
+                <input type="text" id="traegertyp" name="traegertyp">
+
+                <label for="bezugnr">BEZUGNR:</label>
+                <input type="text" id="bezugnr" name="bezugnr">
+
+                <label for="gebietsartnummer">GEBIETSARTNUMMER:</label>
+                <input type="text" id="gebietsartnummer" name="gebietsartnummer">
+
+                <label for="snummer">SNUMMER:</label>
+                <input type="text" id="snummer" name="snummer">
+
+                <label for="nummer">NUMMER:</label>
+                <input type="text" id="nummer" name="nummer">
+
+                <label for="globalid">GlobalID:</label>
+                <input type="text" id="globalid" name="globalid" required>
+
+                <label for="creationdate">CreationDate:</label>
+                <input type="datetime-local" id="creationdate" name="creationdate" required>
+
+                <label for="creator">Creator:</label>
+                <input type="text" id="creator" name="creator" required>
+
+                <label for="editdate">EditDate:</label>
+                <input type="datetime-local" id="editdate" name="editdate">
+
+                <label for="editor">Editor:</label>
+                <input type="text" id="editor" name="editor">
+
+                <!-- Submit button for the form -->
+                <button type="submit">Create Location</button>
+                <!-- Button to save form data as JSON -->
+                <button type="button" id="save-json">Save JSON</button>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--Execute scripts-->
+<script>
+    // Function change body bgcolor
+    document.body.style.backgroundColor = randomColorRGBA(0.1);
+
+    // Function to save form data as JSON
+    saveJSON("location-form")
+</script>
+
+
+</body>
+
+</html>

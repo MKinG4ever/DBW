@@ -1,0 +1,167 @@
+/* Global box-sizing rule */
+* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the HTML and body take full height */
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+/* Basic styling for the body */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* FreeSize Box */
+.box {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Navigation bar*/
+.nav {
+    height: 45px;
+    width: calc(100% - 25px);
+    background-color: #666;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+}
+
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(0, 0, 0, 0.6);
+}
+
+.nav li {
+    float: left;
+}
+
+.nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav li a:hover {
+    background-color: #111;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.1);
+    border-radius: 0 5px 5px 0;
+}
+
+/* Scrollbar Track Hover */
+::-webkit-scrollbar-track:hover {
+    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px 0 0 5px;
+}
+
+/* Scrollbar Handle Hover*/
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Box holder styling */
+.boxHolder {
+    height: calc(100% - 70px);
+    width: calc(100% - 25px);
+    /*padding: 40px;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #3b3b3b;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Styling for the main container */
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 400px;
+    text-align: left;
+    overflow-y: auto;
+    max-height: 90%;
+}
+
+/* Styling for the form headings */
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Styling for the form labels */
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+/* Styling for the form input fields */
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styling for the submit button */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /*width: 100%;*/
+    margin-top: 10px;
+}
+
+/* Change button color on hover */
+button:hover {
+    background-color: #45a049;
+}
+
+/* Styling for the JSON button */
+#save-json {
+    background-color: #008CBA;
+}
+
+#save-json:hover {
+    background-color: #007BB5;
+}
