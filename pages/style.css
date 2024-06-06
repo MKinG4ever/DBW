@@ -1,3 +1,5 @@
+/* Global styles v1.0 */
+
 /* Global box-sizing rule */
 * {
     box-sizing: border-box;
@@ -103,6 +105,8 @@ body {
     border-radius: 0 0 10px 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
+    overflow: hidden;
+    border: 1px solid #111;
 }
 
 /* Styling for the main container */
