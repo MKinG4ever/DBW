@@ -1,4 +1,11 @@
 class Location:
+    """
+    A class representing a geographical location with various attributes.
+
+    Author: Elmira Pour
+    Timestamp: 1717701765.2003505
+    """
+
     def __init__(self, x=None, y=None, objectid=None, id=None, typ=None, art=None, standorttyp=None, bezeichnung=None,
                  bezeichnungzusatz=None, kurzbezeichnung=None, strasse=None, plz=None, ort=None, telefon=None, fax=None,
                  email=None, profile=None, sprachen=None, www=None, traeger=None, traegertyp=None, bezugnr=None,
@@ -17,7 +24,7 @@ class Location:
         :param bezeichnung: The bezeichnung of the location.
         :param bezeichnungzusatz: The bezeichnungzusatz of the location.
         :param kurzbezeichnung: The kurzbezeichnung of the location.
-        :param strasse: The strasse of the location.
+        :param strasse: The street address of the location.
         :param plz: The postal code of the location.
         :param ort: The city of the location.
         :param telefon: The telephone number of the location.
@@ -28,10 +35,10 @@ class Location:
         :param www: The website of the location.
         :param traeger: The traeger of the location.
         :param traegertyp: The traegertyp of the location.
-        :param bezugnr: The bezugnr of the location.
-        :param gebietsartnummer: The gebietsartnummer of the location.
-        :param snummer: The snummer of the location.
-        :param nummer: The nummer of the location.
+        :param bezugnr: The reference number of the location.
+        :param gebietsartnummer: The area type number of the location.
+        :param snummer: The serial number of the location.
+        :param nummer: The number of the location.
         :param globalid: The global ID of the location.
         :param creationdate: The creation date of the location.
         :param creator: The creator of the location.
@@ -72,7 +79,16 @@ class Location:
         self.editor = editor
 
         # Dictionary to hold any additional properties
-        self.extended_properties = {}
+        self.extended_properties = {}  # Additional properties not defined in the class
+
+    @property
+    def version(self):
+        """
+        Get the version of the Location class.
+
+        :return: A string representing the version.
+        """
+        return f"v1.1"  # The current version of the Location class
 
     def to_dict(self):
         """
@@ -82,8 +98,8 @@ class Location:
         """
 
         location_dict = {
-            "x": self.x,
-            "y": self.y,
+            "x": self.x,  # The X coordinate of the location
+            "y": self.y,  # The Y coordinate of the location
             "objectid": self.objectid,
             "id": self.id,
             "typ": self.typ,
@@ -116,11 +132,12 @@ class Location:
 
         # Add extended properties to the dictionary
         location_dict.update(self.extended_properties)
+        # Return the complete dictionary
         return location_dict
 
     def update_properties(self, **kwargs):
         """
-        Update the Location object properties with provided keyword arguments.
+        Update the Location object's properties with provided keyword arguments.
 
         :param kwargs: Dictionary of properties to update.
         """
@@ -128,8 +145,8 @@ class Location:
         for key, value in kwargs.items():
             # Convert keys to lower-case for Matching
             key = key.strip().lower()
-            if hasattr(self, key):
-                setattr(self, key, value)
+            if hasattr(self, key):  # Check if the property exists in the class
+                setattr(self, key, value)  # Update the property value
 
     def extend_properties(self, **kwargs):
         """
@@ -141,6 +158,5 @@ class Location:
         for key, value in kwargs.items():
             # Convert keys to lower-case for Matching
             key = key.strip().lower()
-            if not hasattr(self, key):
-                self.extended_properties[key] = value
-
+            if not hasattr(self, key):  # Check if the property does not exist in the class
+                self.extended_properties[key] = value  # Add the new property to extended_properties
