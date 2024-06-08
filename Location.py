@@ -88,7 +88,7 @@ class Location:
 
         :return: A string representing the version.
         """
-        return f"v1.2"  # The current version of the Location class
+        return f"v1.3"  # The current version of the Location class
 
     def to_dict(self):
         """
@@ -145,6 +145,12 @@ class Location:
         location_dict = {
             "lng": self.x,  # The X coordinate of the location
             "lat": self.y,  # The Y coordinate of the location
+            "carrier": self.traeger,
+            "locName": self.bezeichnungzusatz,
+            "shortName": self.kurzbezeichnung,
+            "street": self.strasse,
+            "postcode": self.plz,
+            "number": self.telefon,
         }
 
         # Return the complete dictionary
