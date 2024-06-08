@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="IsolateErrorPages v1.0">
+    <meta name="description" content="IsolateErrorPages v1.1">
     <title>Special Transport</title>
     <!--Internal Style-->
     <style>
@@ -64,6 +64,24 @@
             font-size: 1.2rem;
             margin-bottom: 30px;
         }
+
+        /* Home button styling */
+        .container a {
+            display: inline-block;
+            padding: 10px 55px;
+            font-size: 1rem;
+            color: #121212; /* Dark text color */
+            background-color: #4CAF50; /* Red background color */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Home button hover effect */
+        .container a:hover {
+            background-color: #4CAF50; /* Darker red on hover */
+            color: #ffffff; /* Light text color on hover */
+        }
     </style>
 
 </head>
@@ -74,13 +92,13 @@
 
     <h1>302</h1>
     <p>You are being transported.</p>
-    <p id="countdown">10</p>
+    <a href="/" id="countdown">5</a>
 
 </div>
 
 <script>
     // Countdown timer
-    let count = 10; // Countdown duration in seconds
+    let count = 5; // Countdown duration in seconds
     const countdownElement = document.getElementById('countdown');
 
     const countdownInterval = setInterval(() => {
