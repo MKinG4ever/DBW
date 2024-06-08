@@ -88,7 +88,7 @@ class Location:
 
         :return: A string representing the version.
         """
-        return f"v1.1"  # The current version of the Location class
+        return f"v1.2"  # The current version of the Location class
 
     def to_dict(self):
         """
@@ -132,6 +132,21 @@ class Location:
 
         # Add extended properties to the dictionary
         location_dict.update(self.extended_properties)
+        # Return the complete dictionary
+        return location_dict
+
+    def to_leaflet(self):
+        """
+        Convert the Location object to a leaflet JSON(dict).
+
+        :return: A dictionary representation of the JSON leaflet.
+        """
+
+        location_dict = {
+            "lng": self.x,  # The X coordinate of the location
+            "lat": self.y,  # The Y coordinate of the location
+        }
+
         # Return the complete dictionary
         return location_dict
 
