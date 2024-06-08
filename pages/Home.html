@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.0">
+    <meta name="description" content="v1.1">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -19,10 +19,12 @@
     </style>
     <!--External Script-->
     <script src="./script.js" type="text/javascript"></script>
+    <script src="./locations.js" type="text/javascript"></script>
     <!--Leaflet styles-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <!--Leaflet scripts-->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 </head>
 
 <body>
@@ -31,7 +33,7 @@
 
     <nav class="nav">
         <ul>
-            <li><a class="active" href="#">Home</a></li>
+            <li><a class="active" href="./Home.html">Home</a></li>
             <li><a href="./LocationMark.html">Location Mark</a></li>
             <li><a href="./User.html">User</a></li>
             <li style="float:right"><a class="active" href="#">About</a></li>
@@ -50,16 +52,30 @@
     // Function change body bgcolor
     document.body.style.backgroundColor = randomColorRGBA(0.5);
 
-    // Initialize Leaflet map
-    let map = L.map('map').setView([51.505, -0.09], 13);
+    // Initialize the Leaflet map
+    let map = L.map('map').setView([50.829, 12.913], 12);
 
-    // Add a base tile layer
+    // Add a base tile layer from OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Add a marker
-    let marker = L.marker([51.50, -0.09]).addTo(map);
+    /**
+     * Add multiple markers to the map
+     * :param locations: Array of objects containing latitude and longitude
+     */
+    function addMarkers(locations) {
+        locations.forEach(location => {
+            L.marker([location.lat, location.lng]).addTo(map)
+                .bindPopup(location.lat + '<br>' + location.lng);
+        });
+    }
+
+    // Add markers to the map using the addMarkers function
+    addMarkers(Schulen);
+    addMarkers(Schulsozialarbeit);
+    addMarkers(Jugendberufshilfen);
+    addMarkers(Kindertageseinrichtungen);
 
 </script>
 
