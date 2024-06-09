@@ -1,4 +1,4 @@
-/* Global styles v1.1 */
+/* Global styles v1.2 */
 
 /* Global box-sizing rule */
 * {
@@ -20,6 +20,33 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.1);
+    border-radius: 0 5px 5px 0;
+}
+
+/* Scrollbar Track Hover */
+::-webkit-scrollbar-track:hover {
+    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px 0 0 5px;
+}
+
+/* Scrollbar Handle Hover*/
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.5);
 }
 
 /* FreeSize Box */
@@ -67,33 +94,6 @@ body {
     background-color: #111;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Scrollbar Track */
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.1);
-    border-radius: 0 5px 5px 0;
-}
-
-/* Scrollbar Track Hover */
-::-webkit-scrollbar-track:hover {
-    box-shadow: inset 0 0 9px rgba(0, 0, 0, 0.3);
-}
-
-/* Scrollbar Handle */
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 5px 0 0 5px;
-}
-
-/* Scrollbar Handle Hover*/
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.5);
-}
-
 /* Box holder styling */
 .boxHolder {
     height: calc(100% - 70px);
@@ -113,8 +113,8 @@ body {
 
 /* Styling for the index page headings */
 .boxHolder > h1 {
-    color: #4CAF50;
-    text-shadow: 0 0 15px #4CAF50;
+    color: #0ef517;
+    text-shadow: 0 0 15px #2faa34;
     font-size: 85px;
     text-align: center;
 }
@@ -123,7 +123,7 @@ body {
 .boxHolder > p {
     color: #ffffff;
     font-size: 42px;
-    text-shadow: 0 0 5px #ffffff;
+    text-shadow: 0 0 10px #ffffff;
     margin: 10px 0 25px;
     text-align: center;
 }
@@ -131,7 +131,7 @@ body {
 /* Container for the map */
 .map_container {
     width: 85%;
-    height: 85%;
+    /*height: 85%;*/
     position: absolute;
     display: flex;
     align-items: center;
@@ -142,15 +142,7 @@ body {
 
 /* Styles for the SVG inside the map container */
 .map_container svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    font-size: 0;
-    line-height: 0;
-    overflow: hidden;
-    contain: strict;
-    fill: rgb(100, 100, 100, 0.7);
+    fill: rgb(105, 105, 105, 0.6);
 }
 
 /* Styling for the main container */
