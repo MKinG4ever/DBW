@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.2">
+    <meta name="description" content="v1.3">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -15,6 +15,39 @@
         #map {
             height: 100%;
             width: 100%;
+        }
+
+        /* CSS for custom marker icon */
+        .custom-div-icon {
+            position: relative;
+            width: 30px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .custom-div-icon .marker-pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 50% 0;
+            background: rgba(150, 150, 150, 0.5);
+            position: absolute;
+            transform: rotate(-45deg);
+            left: 50%;
+            top: 50%;
+            margin: -20px 0 0 -20px;
+        }
+
+        .custom-div-icon .marker-pin:after {
+            content: '';
+            box-shadow: 0 1px 3px #000;
+            width: 14px;
+            height: 14px;
+            margin: 8px 0 0 -7px;
+            background: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            border-radius: 50%;
         }
     </style>
     <!--External Script-->
@@ -66,15 +99,22 @@
 
     /**
      * Add multiple markers to the map
-     * :param locations: Array of objects containing latitude and longitude
+     * @param locations {Array} - Array of objects containing latitude, longitude, and other location data
+     * @param color {string} - Color code for the marker icons
      */
-    function addMarkers(locations) {
+    function addMarkers(locations, color) {
         locations.forEach(location => {
-            L.marker([location.lat, location.lng]).addTo(map)
-                .bindPopup(location.shortName + brs +
+            L.marker([location.lat, location.lng], {
+                icon: L.divIcon({
+                    className: 'custom-div-icon',
+                    html: '<div style="background-color:' + color + ';" class="marker-pin"></div>',
+                    iconSize: [30, 42],
+                    iconAnchor: [15, 42]
+                })
+            }).addTo(map)
+                .bindPopup('Name: ' + location.shortName + ' (' + location.locName + ') ' + brs +
                     'X: ' + location.lat + br +
                     'Y: ' + location.lng + brs +
-                    'Name: ' + location.locName + br +
                     'Carrier: ' + location.carrier + br +
                     'Street: ' + location.street + br +
                     'PostCode: ' + location.postcode + br +
@@ -83,10 +123,10 @@
     }
 
     // Add markers to the map using the addMarkers function
-    addMarkers(Schulen);
-    addMarkers(Schulsozialarbeit);
-    addMarkers(Jugendberufshilfen);
-    addMarkers(Kindertageseinrichtungen);
+    addMarkers(Schulen, 'rgba(50,100,255,0.7)');
+    addMarkers(Schulsozialarbeit, 'rgba(50,200,50,0.7)');
+    addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
+    addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
 
 </script>
 
