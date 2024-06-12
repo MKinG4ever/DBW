@@ -12,7 +12,7 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.1
+    version: 0.2
     """
 
     # write Basic locations on js file
@@ -38,10 +38,11 @@ def write_locations(path):
         leaflet_locations("./csv/Schulsozialarbeit.csv"),
         leaflet_locations("./csv/Jugendberufshilfen.csv"),
         leaflet_locations("./csv/Kindertageseinrichtungen.csv"),
+
     ]
-    with open(path, 'w') as file:
+    with open(file=path, mode='w', encoding='utf-8', errors='replace') as file:
         for loc in _locs:
-            file.write(f"const {loc[0]} = {loc[1]}\n")
+            file.write(f"const {loc[0]} = {loc[1]};\n")
 
 
 def run_server():
