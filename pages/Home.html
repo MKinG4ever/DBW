@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.3">
+    <meta name="description" content="v1.4">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -67,8 +67,20 @@
     <nav class="nav">
         <ul>
             <li><a class="active" href="./Home.html">Home</a></li>
+            <li><a> | </a></li>
             <li><a href="./LocationMark.html">Location Mark</a></li>
             <li><a href="./User.html">User</a></li>
+            <li><a> | </a></li>
+            <li><a>Locations:</a></li>
+            <li>
+                <ul>
+                    <li><a class="_loc" href="#schulen">Schulen</a></li>
+                    <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
+                    <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
+                    <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
+                </ul>
+            </li>
+
             <li style="float:right"><a class="active" href="#">About</a></li>
         </ul>
     </nav>
@@ -128,7 +140,49 @@
     addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
     addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
 
+    // Function to add markers based on the selected category
+    function showCategory(category) {
+        // Remove existing markers from the map
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Add markers based on the selected category
+        switch (category) {
+            case 'schulen':
+                addMarkers(Schulen, 'rgba(50,100,255,0.7)');
+                break;
+            case 'schulsozialarbeit':
+                addMarkers(Schulsozialarbeit, 'rgba(50,200,50,0.7)');
+                break;
+            case 'jugendberufshilfen':
+                addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
+                break;
+            case 'kindertageseinrichtungen':
+                addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Event listener for category links
+    document.querySelectorAll('.nav a._loc').forEach(link => {
+        link.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            // Get the category from the href attribute
+            const category = link.getAttribute('href').substring(1);
+
+            // Show markers for the selected category
+            showCategory(category);
+        });
+    });
+
 </script>
+
 
 </body>
 
