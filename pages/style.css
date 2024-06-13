@@ -1,4 +1,4 @@
-/* Global styles v1.2 */
+/* Global styles v1.3 */
 
 /* Global box-sizing rule */
 * {
@@ -88,6 +88,15 @@ body {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+}
+
+.nav li a.active {
+    color: gray;
+}
+
+.nav li a.sep {
+    color: white;
+    cursor: default;
 }
 
 .nav li a:hover {
