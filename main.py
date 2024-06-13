@@ -12,7 +12,7 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.2
+    version: 0.3
     """
 
     # write Basic locations on js file
@@ -57,7 +57,7 @@ def run_server():
     root_dir = f"{'/'.join(current_location)}/pages"
 
     # Custom error handler
-    handler = CustomHTTPRequestHandler
+    handler = lambda *args, **kwargs: CustomHTTPRequestHandler(*args, **kwargs, server_instance=server)
 
     # Create an instance of CustomHTTPServer
     server = CustomHTTPServer(ip, port, root_dir, handler)
