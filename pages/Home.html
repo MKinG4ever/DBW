@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.4">
+    <meta name="description" content="v1.5">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -67,12 +67,12 @@
     <nav class="nav">
         <ul>
             <li><a class="active" href="./Home.html">Home</a></li>
-            <li><a> | </a></li>
+            <li><a class="sep"> | </a></li>
             <li><a href="./LocationMark.html">Location Mark</a></li>
             <li><a href="./User.html">User</a></li>
-            <li><a> | </a></li>
-            <li><a>Locations:</a></li>
-            <li>
+            <li><a class="sep"> | </a></li>
+            <li id="drop-up"><a href="#" class="_loc">Locations</a></li>
+            <li id="drop-down" style="display: none">
                 <ul>
                     <li><a class="_loc" href="#schulen">Schulen</a></li>
                     <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
@@ -168,6 +168,68 @@
         }
     }
 
+    // Wait for the DOM content to fully load to run Drop-Up/Down
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get references to the drop-up and drop-down elements
+        const dropUp = document.getElementById('drop-up');
+        const dropDown = document.getElementById('drop-down');
+        let locationsVisible = true;
+
+        // Function to show the drop-down menu
+        function showDropDown() {
+            dropDown.style.display = 'block';
+        }
+
+        // Function to hide the drop-down menu
+        function hideDropDown() {
+            dropDown.style.display = 'none';
+        }
+
+        // Example function to show all locations (replace with your own logic)
+        function showAllLocations() {
+            // Add markers for all locations
+            addMarkers(Schulen, 'rgba(50,100,255,0.7)');
+            addMarkers(Schulsozialarbeit, 'rgba(50,200,50,0.7)');
+            addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
+            addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
+        }
+
+        // Example function to clear all locations (replace with your own logic)
+        function clearAllLocations() {
+            // Remove all markers from the map
+            map.eachLayer(function (layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+        }
+
+        // Event listener for mouseenter on drop-up
+        dropUp.addEventListener('mouseenter', showDropDown);
+
+        // Event listener for mouseleave on drop-up
+        dropUp.addEventListener('mouseleave', hideDropDown);
+
+        // Event listener for click on drop-up
+        dropUp.addEventListener('click', function () {
+            if (!locationsVisible) {
+                // Show all locations
+                showAllLocations();
+                locationsVisible = true;
+            } else {
+                // Clear all locations
+                clearAllLocations();
+                locationsVisible = false;
+            }
+        });
+
+        // Event listener for mouseenter on drop-down (in case you want to keep it open when hovering the submenu)
+        dropDown.addEventListener('mouseenter', showDropDown);
+
+        // Event listener for mouseleave on drop-down
+        dropDown.addEventListener('mouseleave', hideDropDown);
+    });
+
     // Event listener for category links
     document.querySelectorAll('.nav a._loc').forEach(link => {
         link.addEventListener('click', function (event) {
@@ -180,6 +242,7 @@
             showCategory(category);
         });
     });
+
 
 </script>
 
