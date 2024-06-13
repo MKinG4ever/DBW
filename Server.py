@@ -18,6 +18,10 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     Timestamp: 1717701765.2003505
     """
 
+    def __init__(self, *args, server_instance=None, **kwargs):
+        self.server_instance = server_instance
+        super().__init__(*args, **kwargs)
+
     @property
     def version(self):
         """
@@ -25,22 +29,11 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.31"  # The current version of the CustomHTTPRequestHandler class
-
-    def authenticate_user(self, username: str, password: str) -> bool:
-        """
-        Authenticate the user.
-
-        :param username: Username provided by the user
-        :param password: Password provided by the user
-        :return: True if authentication is successful, False otherwise
-        """
-        # Placeholder authentication logic
-        return username == 'root' and password == 'root'
+        return f"v1.32"  # The current version of the CustomHTTPRequestHandler class
 
     def save_user_data(self, username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
         """
-        Save user data to a file.
+        Save user data to a file using dictionary format.
 
         :param username: Username provided by the user
         :param password: Password provided by the user
@@ -49,17 +42,63 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param mobile: Mobile number of the user
         :param birthday: Birthday of the user
         """
-        with open('../db.txt', 'a') as file:
-            file.write(
-                f"Username: {username}, Password: {password}, Name: {name}, Email: {email}, Mobile: {mobile}, Birthday: {birthday}\n")
+        user_data = {
+            'Username': username,
+            'Password': password,
+            'Name': name,
+            'Email': email,
+            'Mobile': mobile,
+            'Birthday': birthday
+        }
+
+        with open('./db.txt', 'a') as file:
+            file.write(str(user_data) + '\n')
+
+    def authenticate_user(self, username: str, password: str) -> bool:
+        """
+        Authenticate the user by checking credentials against a database file.
+
+        :param username: Username provided by the user
+        :param password: Password provided by the user
+        :return: True if authentication is successful, False otherwise
+        """
+        try:
+            with open('./db.txt', 'r') as file:
+                for line in file:
+                    user_data = eval(line.strip())  # Convert line from str to dict using eval (unsafe in some cases)
+                    stored_username = user_data.get('Username', '')  # Extract username from dict
+                    stored_password = user_data.get('Password', '')  # Extract password from dict
+
+                    # Check if provided username and password match stored credentials
+                    if username == stored_username and password == stored_password:
+                        return True
+        except Exception as e:
+            print(f"Error reading database file: {e}")
+        return False
 
     def secure(self):
+        """
+        Handle secure requests.
+        """
+        content_length = int(self.headers['Content-Length'])  # Get the length of the POST data
+        post_data = self.rfile.read(content_length).decode('utf-8')  # Read and decode the POST data
+        post_params = parse_qs(post_data)  # Parse the POST data
+
+        # Extract the parsed data
+        _data = post_params.get('None', [''])[0]
+
+        # Handle response
         self.send_response(302)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
+
+        # Create root user for emergency situations
+        self.save_user_data(username='root', password='root', name='', email='', mobile='', birthday='')
+
+        # Show the 302 Response Page in Browser
         with open('./302.html', 'rb') as file:
             self.wfile.write(file.read())
-            # self.wfile.write(b"Server shutting down...")
+        self.server_instance.stop_server()
 
     def send_error(self, code, message=None, **kwargs):
         """
@@ -184,6 +223,7 @@ class CustomHTTPServer:
         self.port = port
         self.root_dir = root_dir
         self.handler_class = handler_class
+        self.httpd = None  # To hold the TCPServer instance
 
     @property
     def version(self):
@@ -192,7 +232,7 @@ class CustomHTTPServer:
 
         :return: A string representing the version.
         """
-        return f"v1.31"  # The current version of the CustomHTTPServer class
+        return f"v1.32"  # The current version of the CustomHTTPServer class
 
     def start_server(self):
         """
@@ -201,8 +241,14 @@ class CustomHTTPServer:
         This method initializes a TCP server using the provided IP address and port number,
         and serves content from the specified root directory using the custom request handler class.
         """
-        os.chdir(self.root_dir)  # Change the current working directory (maybe causing error)
-        with socketserver.TCPServer((self.ip, self.port), self.handler_class) as httpd:
-            print(f"[Server] http://{self.ip}:{self.port} |  {self.root_dir} ")
-            # Serve the content until interrupted
-            httpd.serve_forever()
+        os.chdir(self.root_dir)  # Go to root
+        print(f"[Server] http://{self.ip}:{self.port} |  {self.root_dir} ")  # Present
+        self.httpd = socketserver.TCPServer((self.ip, self.port), self.handler_class)  # Set a socketserver
+        self.httpd.serve_forever()  # execute the server
+
+    def stop_server(self):
+        """
+        Stop the HTTP server.
+        """
+        if hasattr(self, 'httpd') and self.httpd:
+            self.httpd.shutdown()
