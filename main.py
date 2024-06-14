@@ -1,4 +1,5 @@
 from Server import CustomHTTPServer, CustomHTTPRequestHandler
+from Database import DBManager
 from Location import Location
 from User import User
 from Reader import Reader
@@ -12,13 +13,16 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.3
+    version: 0.4
     """
 
     # write Basic locations on js file
     write_locations('./pages/locations.js')
 
-    # starting server
+    # set DataBase and create USER table | Before changing root_dir
+    set_database()
+
+    # starting server | Changing root_dir
     run_server()
 
 
@@ -43,6 +47,16 @@ def write_locations(path):
     with open(file=path, mode='w', encoding='utf-8', errors='replace') as file:
         for loc in _locs:
             file.write(f"const {loc[0]} = {loc[1]};\n")
+
+
+def set_database():
+    dbname = 'database.db'
+    password = None  # Optional, set to None if no password
+
+    # Connect & Disconnect
+    with DBManager(dbname) as db:
+        db.create_user_table()  # create USER table
+        db.db_save_user('root', 'root', None, None, None, None)  # save 'root'
 
 
 def run_server():
