@@ -17,15 +17,80 @@ class User:
         :param birthday: The birthday of the user in 'YYYY-MM-DD' format.
         :param password: The password for the user.
         """
-        # Basic properties
+        # Assign basic properties
         self.username = username
         self.name = name
         self.email = email
         self.mobile = mobile
         self.birthday = birthday
         self.password = password
-        # Dictionary to hold any additional properties
+
+        # Initialize dictionary to hold any additional properties
         self.extended_properties = {}
+
+    def __repr__(self):
+        """
+        Return a string representation of the User object.
+
+        :return: A string with the version and username of the user.
+        """
+        return f"User Object {self.version} | Username: {self.username}"
+
+    def __str__(self):
+        """
+        Return a user-friendly string representation of the User object.
+
+        :return: A string with user details.
+        """
+        return f"User(username={self.username}, name={self.name}, email={self.email})"
+
+    def __eq__(self, other):
+        """
+        Compare two User objects for equality.
+
+        :param other: The other User object to compare with.
+        :return: True if both User objects are equal, False otherwise.
+        """
+        if isinstance(other, User):
+            return self.to_dict() == other.to_dict()
+        return False
+
+    def __hash__(self):
+        """
+        Make the User object hashable.
+
+        :return: An integer hash value of the User object.
+        """
+        return hash(tuple(sorted(self.to_dict().items())))
+
+    def __len__(self):
+        """
+        Return the number of attributes in the User object.
+
+        :return: An integer count of the User's attributes.
+        """
+        return len(self.to_dict())
+
+    def __getitem__(self, key):
+        """
+        Allow dictionary-like access to the User's properties.
+
+        :param key: The property name to get.
+        :return: The value of the specified property.
+        """
+        return self.to_dict().get(key)
+
+    def __setitem__(self, key, value):
+        """
+        Allow dictionary-like setting of the User's properties.
+
+        :param key: The property name to set.
+        :param value: The value to set for the property.
+        """
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            self.extended_properties[key] = value
 
     @property
     def version(self):
@@ -34,7 +99,7 @@ class User:
 
         :return: A string representing the version.
         """
-        return f"v1.1"  # The current version of the User class
+        return f"v1.2"  # The current version of the User class
 
     def to_dict(self):
         """
@@ -42,7 +107,7 @@ class User:
 
         :return: A dictionary representation of the User object.
         """
-        # The basic properties as a dict
+        # Create a dictionary with the basic properties
         user_dict = {
             "username": self.username,
             "name": self.name,
@@ -51,8 +116,9 @@ class User:
             "birthday": self.birthday,
             "password": self.password
         }
-        # Add extended properties to the dictionary
+        # Update the dictionary with any extended properties
         user_dict.update(self.extended_properties)
+
         # Return the complete dictionary
         return user_dict
 
@@ -62,12 +128,12 @@ class User:
 
         :param kwargs: Dictionary of properties to update.
         """
-        # Update existing properties
+        # Iterate over the provided properties
         for key, value in kwargs.items():
             # Convert key to lower-case for matching
             key = key.lower()
             if hasattr(self, key):  # Check if the property exists in the class
-                setattr(self, key, value)  # Update the property value
+                setattr(self, key, value)  # Update the property valu
 
     def extend_properties(self, **kwargs):
         """
@@ -75,7 +141,7 @@ class User:
 
         :param kwargs: Dictionary of new properties to add.
         """
-        # Add new properties not defined in the class
+        # Iterate over the provided properties
         for key, value in kwargs.items():
             # Convert key to lower-case for matching
             key = key.lower()
