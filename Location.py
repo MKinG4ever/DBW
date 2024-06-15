@@ -81,6 +81,70 @@ class Location:
         # Dictionary to hold any additional properties
         self.extended_properties = {}  # Additional properties not defined in the class
 
+    def __repr__(self):
+        """
+        Return a string representation of the Location object.
+
+        :return: A string with the version and ID of the location.
+        """
+        return f"Location Object {self.version} | {self.__str__()}"
+
+    def __str__(self):
+        """
+        Return a user-friendly string representation of the Location object.
+
+        :return: A string with location details.
+        """
+        return f"X: {self.x}, Y: {self.y}"
+
+    def __eq__(self, other):
+        """
+        Compare two Location objects for equality.
+
+        :param other: The other Location object to compare with.
+        :return: True if both Location objects are equal, False otherwise.
+        """
+        if isinstance(other, Location):
+            return self.to_dict() == other.to_dict()
+        return False
+
+    def __hash__(self):
+        """
+        Make the Location object hashable.
+
+        :return: An integer hash value of the Location object.
+        """
+        return hash(tuple(sorted(self.to_dict().items())))
+
+    def __len__(self):
+        """
+        Return the number of attributes in the Location object.
+
+        :return: An integer count of the Location's attributes.
+        """
+        return len(self.to_dict())
+
+    def __getitem__(self, key):
+        """
+        Allow dictionary-like access to the Location's properties.
+
+        :param key: The property name to get.
+        :return: The value of the specified property.
+        """
+        return self.to_dict().get(key)
+
+    def __setitem__(self, key, value):
+        """
+        Allow dictionary-like setting of the Location's properties.
+
+        :param key: The property name to set.
+        :param value: The value to set for the property.
+        """
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            self.extended_properties[key] = value
+
     @property
     def version(self):
         """
@@ -88,7 +152,7 @@ class Location:
 
         :return: A string representing the version.
         """
-        return f"v1.4"  # The current version of the Location class
+        return f"v1.5"  # The current version of the Location class
 
     def to_dict(self):
         """
@@ -162,7 +226,7 @@ class Location:
 
         :param kwargs: Dictionary of properties to update.
         """
-
+        # Iterate over the provided properties
         for key, value in kwargs.items():
             # Convert keys to lower-case for Matching
             key = key.strip().lower()
@@ -175,7 +239,7 @@ class Location:
 
         :param kwargs: Dictionary of new properties to add.
         """
-
+        # Iterate over the provided properties
         for key, value in kwargs.items():
             # Convert keys to lower-case for Matching
             key = key.strip().lower()
