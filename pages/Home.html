@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.6">
+    <meta name="description" content="v1.7">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -49,6 +49,7 @@
             position: absolute;
             border-radius: 50%;
         }
+
     </style>
     <!--External Script-->
     <script src="./script.js" type="text/javascript"></script>
@@ -64,23 +65,13 @@
 
 <div class="box">
 
+
     <nav class="nav">
         <ul>
             <li><a class="active" href="./Home.html">Home</a></li>
             <li><a class="sep"> | </a></li>
             <li><a href="./LocationMark.html">Location Mark</a></li>
             <li><a href="./User.html">User</a></li>
-            <li><a class="sep"> | </a></li>
-            <li id="drop-up"><a href="#" class="_loc">Locations</a></li>
-            <li id="drop-down" style="display: none">
-                <ul>
-                    <li><a class="_loc" href="#schulen">Schulen</a></li>
-                    <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
-                    <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
-                    <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
-                </ul>
-            </li>
-
             <li style="float:right"><a class="active" href="#">{{username}}</a></li>
         </ul>
     </nav>
@@ -88,9 +79,49 @@
     <div class="boxHolder">
         <!-- Map container -->
         <div id="map"></div>
+
     </div>
 
+
+        <div class="paperTabL">
+
+            <ul class="category">
+                <li><a class="_loc" href="#">All</a></li>
+                <li><a class="_loc" href="#schulen">Schulen</a></li>
+                <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
+                <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
+                <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
+                <li><a class="_loc" href="#favorite">Favorites</a></li>
+            </ul>
+
+        </div>
+
+
+        <div class="paperTabR">
+            <!-- Form to add favorite locations -->
+            <div class="favorite-form-container">
+                <form id="favorite-form">
+                    <label for="locName">Favorite: </label>
+                    <input type="text" id="locName" name="locName" placeholder="location name" required>
+
+
+                    <label for="lat">Latitude: </label>
+                    <input type="text" id="lat" name="lat" placeholder="X: 50.0123" required>
+
+
+                    <label for="lng">Longitude: </label>
+                    <input type="text" id="lng" name="lng" placeholder="Y: 12.0123" required>
+
+                    <button type="submit">Add Location</button>
+
+                </form>
+            </div>
+        </div>
+
+
+
 </div>
+
 
 <!--Execute scripts-->
 <script>
@@ -231,7 +262,7 @@
     });
 
     // Event listener for category links
-    document.querySelectorAll('.nav a._loc').forEach(link => {
+    document.querySelectorAll('a._loc').forEach(link => {
         link.addEventListener('click', function (event) {
             event.preventDefault(); // Prevent default link behavior
 
@@ -241,6 +272,37 @@
             // Show markers for the selected category
             showCategory(category);
         });
+    });
+
+    // Function to add a favorite marker to the map
+    function addFavoriteMarker(lat, lng, locName) {
+        L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background-color: rgba(255,0,0,0.7);" class="marker-pin"></div>',
+                iconSize: [30, 42],
+                iconAnchor: [15, 42]
+            })
+        }).addTo(map)
+            .bindPopup('Favorite Location: ' + locName + brs +
+                'X: ' + lat + br +
+                'Y: ' + lng);
+    }
+
+    // Handle the submission of the favorite location form
+    document.getElementById('favorite-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        // Get form values
+        const locName = document.getElementById('locName').value;
+        const lat = parseFloat(document.getElementById('lat').value);
+        const lng = parseFloat(document.getElementById('lng').value);
+
+        // Add the favorite marker to the map
+        addFavoriteMarker(lat, lng, locName);
+
+        // Clear the form
+        this.reset();
     });
 
 
