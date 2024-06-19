@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.7">
+    <meta name="description" content="v1.81">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -83,41 +83,39 @@
     </div>
 
 
-        <div class="paperTabL">
+    <div class="paperTabL">
 
-            <ul class="category">
-                <li><a class="_loc" href="#">All</a></li>
-                <li><a class="_loc" href="#schulen">Schulen</a></li>
-                <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
-                <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
-                <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
-                <li><a class="_loc" href="#favorite">Favorites</a></li>
-            </ul>
+        <ul class="category">
+            <li><a class="_loc" id="all" href="#">All</a></li>
+            <li><a class="_loc" href="#schulen">Schulen</a></li>
+            <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
+            <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
+            <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
+            <li><a class="_loc" href="#favorite">Favorites</a></li>
+        </ul>
 
+    </div>
+
+
+    <div class="paperTabR">
+        <!-- Form to add favorite locations -->
+        <div class="favorite-form-container">
+            <form id="favorite-form" action="/Home" method="post">
+                <input type="hidden" id="username" name="username" value="{{username}}">
+
+                <label for="locName">Favorite: </label>
+                <input type="text" id="locName" name="locName" placeholder="Location name" required>
+
+                <label for="lat">Latitude: </label>
+                <input type="text" id="lat" name="lat" placeholder="Latitude: 50.0123" required>
+
+                <label for="lng">Longitude: </label>
+                <input type="text" id="lng" name="lng" placeholder="Longitude: 12.0123" required>
+
+                <button type="submit">Add Location</button>
+            </form>
         </div>
-
-
-        <div class="paperTabR">
-            <!-- Form to add favorite locations -->
-            <div class="favorite-form-container">
-                <form id="favorite-form">
-                    <label for="locName">Favorite: </label>
-                    <input type="text" id="locName" name="locName" placeholder="location name" required>
-
-
-                    <label for="lat">Latitude: </label>
-                    <input type="text" id="lat" name="lat" placeholder="X: 50.0123" required>
-
-
-                    <label for="lng">Longitude: </label>
-                    <input type="text" id="lng" name="lng" placeholder="Y: 12.0123" required>
-
-                    <button type="submit">Add Location</button>
-
-                </form>
-            </div>
-        </div>
-
+    </div>
 
 
 </div>
@@ -199,22 +197,11 @@
         }
     }
 
-    // Wait for the DOM content to fully load to run Drop-Up/Down
+    // Wait for the DOM content to fully load to run "All"
     document.addEventListener("DOMContentLoaded", function () {
-        // Get references to the drop-up and drop-down elements
-        const dropUp = document.getElementById('drop-up');
-        const dropDown = document.getElementById('drop-down');
+        // Get references
+        const _all = document.getElementById('all');
         let locationsVisible = true;
-
-        // Function to show the drop-down menu
-        function showDropDown() {
-            dropDown.style.display = 'block';
-        }
-
-        // Function to hide the drop-down menu
-        function hideDropDown() {
-            dropDown.style.display = 'none';
-        }
 
         // Example function to show all locations (replace with your own logic)
         function showAllLocations() {
@@ -235,14 +222,8 @@
             });
         }
 
-        // Event listener for mouseenter on drop-up
-        dropUp.addEventListener('mouseenter', showDropDown);
-
-        // Event listener for mouseleave on drop-up
-        dropUp.addEventListener('mouseleave', hideDropDown);
-
         // Event listener for click on drop-up
-        dropUp.addEventListener('click', function () {
+        _all.addEventListener('click', function () {
             if (!locationsVisible) {
                 // Show all locations
                 showAllLocations();
@@ -254,11 +235,6 @@
             }
         });
 
-        // Event listener for mouseenter on drop-down (in case you want to keep it open when hovering the submenu)
-        dropDown.addEventListener('mouseenter', showDropDown);
-
-        // Event listener for mouseleave on drop-down
-        dropDown.addEventListener('mouseleave', hideDropDown);
     });
 
     // Event listener for category links
@@ -297,6 +273,11 @@
         const locName = document.getElementById('locName').value;
         const lat = parseFloat(document.getElementById('lat').value);
         const lng = parseFloat(document.getElementById('lng').value);
+
+        // Example: log values to console for debugging
+        console.log('Location Name:', locName);
+        console.log('Latitude:', lat);
+        console.log('Longitude:', lng);
 
         // Add the favorite marker to the map
         addFavoriteMarker(lat, lng, locName);
