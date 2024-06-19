@@ -55,7 +55,7 @@ class DBManager:
 
         :return: A string representing the version.
         """
-        return f"v1.0"  # The current version of the DBManager class
+        return f"v1.11"  # The current version of the DBManager class
 
     def connect(self):
         """
@@ -81,6 +81,31 @@ class DBManager:
         finally:
             self.conn = None
             self.cursor = None
+
+    def read_db(self, locate):
+        """Function to read data from the database"""
+        try:
+            # Connect to the database
+            conn = sqlite3.connect(self.dbname)
+            cursor = conn.cursor()
+
+            # Execute a SELECT query
+            cursor.execute(f"SELECT * FROM {locate}")
+
+            # Fetch all rows
+            rows = cursor.fetchall()
+
+            # Print the fetched data
+            for row in rows:
+                print(row)
+
+        except sqlite3.Error as e:
+            print(f"Error reading data from database: {e}")
+
+        finally:
+            # Close connection
+            if conn:
+                conn.close()
 
     def execute_query(self, query, params=()):
         """
@@ -126,6 +151,37 @@ class DBManager:
                               '            )\n'
                               '        ')
         self.execute_query(create_table_query)
+
+    def create_favorite_table(self):
+        """
+        Create the 'favorite' table if it doesn't exist.
+        """
+        create_table_query = ('\n'
+                              '            CREATE TABLE IF NOT EXISTS favorite (\n'
+                              '                id INTEGER PRIMARY KEY AUTOINCREMENT,\n'
+                              '                username TEXT NOT NULL,\n'
+                              '                loc_name TEXT NOT NULL,\n'
+                              '                lat REAL NOT NULL,\n'
+                              '                lng REAL NOT NULL\n'
+                              '            )\n'
+                              '        ')
+        self.execute_query(create_table_query)
+
+    def db_save_favorite_location(self, username, loc_name, lat, lng):
+        """
+        Save a favorite location for a user into the 'favorite' table.
+
+        :param username: Username of the user.
+        :param loc_name: Name of the favorite location.
+        :param lat: Latitude of the location.
+        :param lng: Longitude of the location.
+        """
+        insert_query = ('\n'
+                        '            INSERT INTO favorite (username, loc_name, lat, lng)\n'
+                        '            VALUES (?, ?, ?, ?)\n'
+                        '        ')
+        self.execute_query(insert_query, (username, loc_name, lat, lng))
+        print(f"Favorite location '{loc_name}' for user '{username}' successfully saved.")
 
     def db_save_user(self, username, password, name, email, mobile, birthday):
         """
