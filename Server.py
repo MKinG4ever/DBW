@@ -30,7 +30,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.41"  # The current version of the CustomHTTPRequestHandler class
+        return f"v1.51"  # The current version of the CustomHTTPRequestHandler class
 
     @staticmethod
     def save_user_data(username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
@@ -66,6 +66,20 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             authenticated = db.db_authenticate_user(username, password)
             print(f"Authentication result: {authenticated}")
             return authenticated
+
+    @staticmethod
+    def save_favorite(username, loc_name, lat, lng):
+        """
+        Save favorite location to a database.
+        """
+        try:
+            # Connect to the database and save the location
+            with DBManager('../database.db') as db:
+                db.create_favorite_table()
+                db.db_save_favorite_location(username, loc_name, lat, lng)
+                print('Debuger:save_favorite')
+        except Exception as e:
+            print(f"Error saving favorite location: {e}")
 
     def secure(self):
         """
@@ -181,6 +195,31 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         with open('./index.html', 'rb') as file:  # Path to success page after signup
             self.wfile.write(file.read())
 
+    def handle_favorites(self):
+        """
+        Handle the addition of favorite locations.
+        """
+        print('Debuger:handle_favorites')
+
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length).decode('utf-8')
+        post_params = parse_qs(post_data)
+
+        # Extract form data
+        loc_name = post_params.get('locName', [''])[0]
+        lat = float(post_params.get('lat', [''])[0])
+        lng = float(post_params.get('lng', [''])[0])
+        username = post_params.get('username', [''])[0]
+
+        # Save to database or perform other actions
+        self.save_favorite(username, loc_name, lat, lng)
+
+        # Respond with a success message
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'Favorite location added successfully')
+
     def do_POST(self):
         """
         Handle POST requests to process form submissions.
@@ -191,6 +230,8 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_signin()
         elif self.path == '/Login':
             self.handle_login()
+        elif self.path == '/Home' or self.path == '/Login':
+            self.handle_favorites()
         else:
             self.send_error(404)  # Page not found error
 
