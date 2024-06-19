@@ -13,7 +13,7 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.5
+    version: 0.61
     """
 
     # write Basic locations on js file
@@ -23,7 +23,7 @@ def main():
     set_database()
 
     # starting server | Changing root_dir
-    run_server(ip="localhost", port=1000)
+    run_server(ip="127.0.0.1", port=1000)
 
 
 def leaflet_locations(path):
@@ -55,6 +55,12 @@ def set_database():
 
     # Connect & Disconnect
     with DBManager(dbname) as db:
+        # favorite
+        db.create_favorite_table()
+        db.db_save_favorite_location('root', 'home', 50.123, 12.123)
+        db.db_save_favorite_location('root', 'Park', 34.0522, -118.2437)
+        db.db_save_favorite_location('root', 'Workplace', 37.7749, -122.4194)
+        # users
         db.create_user_table()  # create USER table
         db.db_save_user('root', 'root', None, None, None, None)  # save 'root'
 
