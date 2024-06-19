@@ -13,7 +13,7 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.4
+    version: 0.5
     """
 
     # write Basic locations on js file
@@ -23,7 +23,7 @@ def main():
     set_database()
 
     # starting server | Changing root_dir
-    run_server()
+    run_server(ip="localhost", port=1000)
 
 
 def leaflet_locations(path):
@@ -59,12 +59,8 @@ def set_database():
         db.db_save_user('root', 'root', None, None, None, None)  # save 'root'
 
 
-def run_server():
+def run_server(ip="127.0.0.1", port=1000):
     echo('Preparing Server...', delay=0.1, end='\n')
-
-    # Define the IP address, port, and root directory
-    ip = "127.0.0.1"  # All networks | (Default: 127.0.0.1)
-    port = 1000
 
     # Setup root location
     current_location = os.getcwd().split('\\') if platform.system() == 'Windows' else os.getcwd().split('/')
