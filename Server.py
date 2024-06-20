@@ -30,7 +30,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.61"  # The current version of the CustomHTTPRequestHandler class
+        return f"v1.71"  # The current version of the CustomHTTPRequestHandler class
 
     @staticmethod
     def save_user_data(username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
@@ -220,6 +220,29 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Favorite location added successfully')
 
+    def delete_account(self):
+        content_length = int(self.headers['Content-Length'])  # Get the length of the POST data
+        post_data = self.rfile.read(content_length).decode('utf-8')  # Read and decode the POST data
+        post_params = parse_qs(post_data)  # Parse the POST data
+
+        # Extract the username from POST parameters
+        username = post_params.get('username', [''])[0]
+
+        # Perform the deletion
+        try:
+            with DBManager('../database.db') as db:
+                db.delete_user(username)
+                print(f"User '{username}' deleted successfully.")
+                # Respond with success message or redirect as needed
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                self.wfile.write(f"User '{username}' deleted successfully.".encode('utf-8'))
+        except Exception as e:
+            # Handle any errors that occur during deletion
+            print(f"Error deleting user '{username}': {e}")
+            self.send_error(500, message=f"Error deleting user '{username}': {e}")
+
     def do_POST(self):
         """
         Handle POST requests to process form submissions.
@@ -232,6 +255,8 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_login()
         elif self.path == '/Home':
             self.handle_favorites()
+        elif self.path == '/delete_account':
+            self.delete_account()
         else:
             self.send_error(404)  # Page not found error
 
