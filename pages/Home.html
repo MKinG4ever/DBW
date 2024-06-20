@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.81">
+    <meta name="description" content="v1.91">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -54,6 +54,7 @@
     <!--External Script-->
     <script src="./script.js" type="text/javascript"></script>
     <script src="./locations.js" type="text/javascript"></script>
+    <script src="./fav.js" type="text/javascript"></script>
     <!--Leaflet styles-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <!--Leaflet scripts-->
@@ -64,7 +65,6 @@
 <body>
 
 <div class="box">
-
 
     <nav class="nav">
         <ul>
@@ -77,11 +77,11 @@
     </nav>
 
     <div class="boxHolder">
+
         <!-- Map container -->
         <div id="map"></div>
 
     </div>
-
 
     <div class="paperTabL">
 
@@ -91,15 +91,16 @@
             <li><a class="_loc" href="#schulsozialarbeit">Schulsozialarbeit</a></li>
             <li><a class="_loc" href="#jugendberufshilfen">Jugendberufshilfen</a></li>
             <li><a class="_loc" href="#kindertageseinrichtungen">Kindertageseinrichtungen</a></li>
-            <li><a class="_loc" href="#favorite">Favorites</a></li>
+            <li><a class="_loc" href="#favorites">Favorites</a></li>
         </ul>
 
     </div>
 
-
     <div class="paperTabR">
+
         <!-- Form to add favorite locations -->
         <div class="favorite-form-container">
+
             <form id="favorite-form" action="/Home" method="post">
                 <input type="hidden" id="username" name="username" value="{{username}}">
 
@@ -114,12 +115,12 @@
 
                 <button type="submit">Add Location</button>
             </form>
+
         </div>
+
     </div>
 
-
 </div>
-
 
 <!--Execute scripts-->
 <script>
@@ -168,6 +169,8 @@
     addMarkers(Schulsozialarbeit, 'rgba(50,200,50,0.7)');
     addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
     addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
+    addMarkers(favorites, 'rgba(255,0,0,0.7)');
+
 
     // Function to add markers based on the selected category
     function showCategory(category) {
@@ -192,6 +195,9 @@
             case 'kindertageseinrichtungen':
                 addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
                 break;
+            case 'favorites':
+                addMarkers(favorites, 'rgba(255,0,0,0.7)');
+                break;
             default:
                 break;
         }
@@ -210,6 +216,7 @@
             addMarkers(Schulsozialarbeit, 'rgba(50,200,50,0.7)');
             addMarkers(Jugendberufshilfen, 'rgba(150,25,200,0.7)');
             addMarkers(Kindertageseinrichtungen, 'rgba(250,150,50,0.7)');
+            addMarkers(favorites, 'rgba(255,0,0,0.7)');
         }
 
         // Example function to clear all locations (replace with your own logic)
@@ -265,30 +272,29 @@
                 'Y: ' + lng);
     }
 
-    // Handle the submission of the favorite location form
-    document.getElementById('favorite-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        // Get form values
-        const locName = document.getElementById('locName').value;
-        const lat = parseFloat(document.getElementById('lat').value);
-        const lng = parseFloat(document.getElementById('lng').value);
-
-        // Example: log values to console for debugging
-        console.log('Location Name:', locName);
-        console.log('Latitude:', lat);
-        console.log('Longitude:', lng);
-
-        // Add the favorite marker to the map
-        addFavoriteMarker(lat, lng, locName);
-
-        // Clear the form
-        this.reset();
-    });
+    // // Handle the submission of the favorite location form
+    // document.getElementById('favorite-form').addEventListener('submit', function (event) {
+    //     event.preventDefault();
+    //
+    //     // Get form values
+    //     const locName = document.getElementById('locName').value;
+    //     const lat = parseFloat(document.getElementById('lat').value);
+    //     const lng = parseFloat(document.getElementById('lng').value);
+    //
+    //     // Example: log values to console for debugging
+    //     console.log('Location Name:', locName);
+    //     console.log('Latitude:', lat);
+    //     console.log('Longitude:', lng);
+    //
+    //     // Add the favorite marker to the map
+    //     addFavoriteMarker(lat, lng, locName);
+    //
+    //     // Clear the form
+    //     this.reset();
+    // });
 
 
 </script>
-
 
 </body>
 
