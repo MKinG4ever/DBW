@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="v1.91">
+    <meta name="description" content="v2.01">
     <title>Home</title>
     <!--External Style-->
     <link rel="stylesheet" type="text/css" href="style.css">
@@ -72,7 +72,7 @@
             <li><a class="sep"> | </a></li>
             <li><a href="./LocationMark.html">Location Mark</a></li>
             <li><a href="./User.html">User</a></li>
-            <li style="float:right"><a class="active" href="#">{{username}}</a></li>
+            <li style="float:right"><a id="delete-account-link" class="active" href="#">{{username}}</a></li>
         </ul>
     </nav>
 
@@ -293,6 +293,36 @@
     //     this.reset();
     // });
 
+    function confirmDeleteAccount() {
+        if (confirm("Are you sure you want to delete your account?")) {
+            const username = "{{username}}"; // Replace with actual username
+            fetch('/delete_account', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `username=${username}`
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // Handle success response
+                    // Optionally redirect or show success message
+                })
+                .catch(error => {
+                    console.error('Error:', error); // Handle errors
+                    // Optionally show error message to the user
+                });
+        } else {
+            // Handle cancellation of account deletion
+        }
+    }
+
+    document.getElementById('delete-account-link').addEventListener('click', confirmDeleteAccount)
 
 </script>
 
