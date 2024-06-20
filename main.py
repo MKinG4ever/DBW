@@ -13,7 +13,7 @@ def main():
     """
     Author: Elmira Pour
     Timestamp: 1717701765.2003505
-    version: 0.61
+    version: 0.71
     """
 
     # write Basic locations on js file
@@ -57,12 +57,18 @@ def set_database():
     with DBManager(dbname) as db:
         # favorite
         db.create_favorite_table()
-        db.db_save_favorite_location('root', 'home', 50.123, 12.123)
-        db.db_save_favorite_location('root', 'Park', 34.0522, -118.2437)
-        db.db_save_favorite_location('root', 'Workplace', 37.7749, -122.4194)
+        db.db_save_favorite_location('root', 'home', 50.826, 12.950)
+        db.db_save_favorite_location('root', 'Park', 50.832, 12.960)
+        db.db_save_favorite_location('root', 'Workplace', 50.825, 12.945)
+        db.db_save_favorite_location('root', 'new1', 50.835, 12.955)
+        db.db_save_favorite_location('root', 'new2', 50.839, 12.969)
+        db.db_save_favorite_location('root', 'new3', 50.820, 12.940)
         # users
         db.create_user_table()  # create USER table
         db.db_save_user('root', 'root', None, None, None, None)  # save 'root'
+        ul = db.get_user_locations('root')
+        print(ul)
+        db.write_user_locations('root','./pages/fav.js')
 
 
 def run_server(ip="127.0.0.1", port=1000):
