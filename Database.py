@@ -56,7 +56,7 @@ class DBManager:
 
         :return: A string representing the version.
         """
-        return f"v1.21"  # The current version of the DBManager class
+        return f"v1.31"  # The current version of the DBManager class
 
     def connect(self):
         """
@@ -269,6 +269,38 @@ class DBManager:
         with open(file=path, mode='w', encoding='utf-8', errors='replace') as file:
             file.write(f"const favorites = {locations}")
         print(f"Favorite locations for user '{username}' successfully written to {path}")
+
+    def delete_user(self, username):
+        """
+        Delete a user from the 'users' table based on their username.
+
+        :param username: Username of the user to delete.
+        """
+        try:
+            delete_user_query = ('\n'
+                                 '                   DELETE FROM users\n'
+                                 '                   WHERE username = ?;\n'
+                                 '               ')
+            self.execute_query(delete_user_query, (username,))
+            print(f"User '{username}' deleted successfully.")
+        except sqlite3.Error as e:
+            print(f"Error deleting user '{username}': {e}")
+
+    def delete_favorite_location(self, location_id):
+        """
+        Delete a favorite location from the 'favorite' table based on location ID.
+
+        :param location_id: ID of the location to delete.
+        """
+        try:
+            delete_favorite_query = ('\n'
+                                     '                DELETE FROM favorite\n'
+                                     '                WHERE id = ?;\n'
+                                     '            ')
+            self.execute_query(delete_favorite_query, (location_id,))
+            print(f"Favorite location with ID '{location_id}' deleted successfully.")
+        except sqlite3.Error as e:
+            print(f"Error deleting favorite location with ID '{location_id}': {e}")
 
     def __enter__(self):
         """
