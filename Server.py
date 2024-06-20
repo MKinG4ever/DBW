@@ -30,7 +30,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.51"  # The current version of the CustomHTTPRequestHandler class
+        return f"v1.61"  # The current version of the CustomHTTPRequestHandler class
 
     @staticmethod
     def save_user_data(username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
@@ -230,7 +230,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.handle_signin()
         elif self.path == '/Login':
             self.handle_login()
-        elif self.path == '/Home' or self.path == '/Login':
+        elif self.path == '/Home':
             self.handle_favorites()
         else:
             self.send_error(404)  # Page not found error
