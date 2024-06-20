@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 
 class DBManager:
@@ -55,7 +56,7 @@ class DBManager:
 
         :return: A string representing the version.
         """
-        return f"v1.11"  # The current version of the DBManager class
+        return f"v1.21"  # The current version of the DBManager class
 
     def connect(self):
         """
@@ -218,6 +219,56 @@ class DBManager:
             return True
         else:
             return False
+
+    def get_user_locations(self, username):
+        """
+        Retrieve all locations associated with a specific username.
+
+        :param username: Username of the user whose locations are to be retrieved.
+        :return: A list of dictionaries containing detailed location information.
+        """
+        select_query = ('\n'
+                        '            SELECT loc_name, lat, lng\n'
+                        '            FROM favorite\n'
+                        '            WHERE username = ?\n'
+                        '        ')
+        try:
+            self.cursor.execute(select_query, (username,))
+            locations = self.cursor.fetchall()
+            # Convert the result to a list of dictionaries
+            location_list = []
+            for loc in locations:
+                location_dict = {
+                    "lng": loc[2],  # Longitude of the location
+                    "lat": loc[1],  # Latitude of the location
+                    "carrier": "",  # Assuming no carrier information in the database
+                    "locName": loc[0],  # Location name
+                    "shortName": "",  # Assuming no short name in the database
+                    "street": "",  # Assuming no street information in the database
+                    "postcode": "",  # Assuming no postcode information in the database
+                    "number": ""  # Assuming no number (phone) information in the database
+                }
+                location_list.append(location_dict)
+            return location_list
+        except sqlite3.Error as e:
+            print(f"Error retrieving locations for user '{username}': {e}")
+            return None
+
+    def write_user_locations(self, username, path):
+        """
+        Retrieve favorite locations for a user and write them to a .js file as JSON.
+
+        :param username: Username of the user whose locations are to be written.
+        :param path: Path to the .js file where the locations will be written.
+        """
+        locations = self.get_user_locations(username)
+        if locations is None:
+            print(f"No locations found for user '{username}'")
+            return
+
+        with open(file=path, mode='w', encoding='utf-8', errors='replace') as file:
+            file.write(f"const favorites = {locations}")
+        print(f"Favorite locations for user '{username}' successfully written to {path}")
 
     def __enter__(self):
         """
