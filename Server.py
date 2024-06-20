@@ -30,7 +30,7 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         :return: A string representing the version.
         """
-        return f"v1.71"  # The current version of the CustomHTTPRequestHandler class
+        return f"v1.81"  # The current version of the CustomHTTPRequestHandler class
 
     @staticmethod
     def save_user_data(username: str, password: str, name: str, email: str, mobile: str, birthday: str) -> None:
@@ -242,6 +242,34 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             # Handle any errors that occur during deletion
             print(f"Error deleting user '{username}': {e}")
             self.send_error(500, message=f"Error deleting user '{username}': {e}")
+
+    def api_service(self):
+        """
+        Handle GET requests to /api endpoint.
+        Retrieve data and display it on api.html page.
+        """
+        try:
+            # Mock data for demonstration
+            api_data = [
+                {'id': 1, 'name': 'API 1', 'description': 'Description of API 1'},
+                {'id': 2, 'name': 'API 2', 'description': 'Description of API 2'},
+                {'id': 3, 'name': 'API 3', 'description': 'Description of API 3'}
+            ]
+
+            # Send response with API data
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+
+            with open('./api.html', 'r') as file:
+                api_content = file.read()
+
+                # Replace placeholder with API data
+                api_content = api_content.replace('{{API COMING}}', str(api_data))
+                self.wfile.write(api_content.encode('utf-8'))
+
+        except Exception as e:
+            self.send_error(500, message=f"Error retrieving API data: {e}")
 
     def do_POST(self):
         """
